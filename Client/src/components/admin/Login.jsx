@@ -19,7 +19,7 @@ const Login = () => {
             axios.defaults.headers.common['Authorization'] = data.token
           }
           else{
-            toast.data(data.message)
+            toast.error(data.message)
           }
         } catch (error) {
           toast.error(error.message)
