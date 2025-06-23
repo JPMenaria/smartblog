@@ -7,6 +7,8 @@ const blogSchema = new mongoose.Schema({
     category: {type: String, required: true},
     image: {type: String, required: true},
     isPublished: {type: Boolean, required: true},
+    likes: [{ type: String }],
+dislikes: [{ type: String }], 
 },{timestamps: true});
 
 const Blog = mongoose.model('blog',blogSchema)

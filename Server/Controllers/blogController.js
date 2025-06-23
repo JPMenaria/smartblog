@@ -128,3 +128,55 @@ export const generateContent = async (req,res) => {
         res.json({success: false, message: error.message})
     }
 }
+
+export const toggleLike = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+    const userId = req.body.userId || req.ip;
+
+    const blog = await Blog.findById(blogId);
+    if (!blog) return res.json({ success: false, message: "Blog not found" });
+
+    const alreadyLiked = blog.likes.includes(userId);
+    const alreadyDisliked = blog.dislikes.includes(userId);
+
+    if (alreadyLiked) {
+      blog.likes = blog.likes.filter(id => id !== userId);
+    } else {
+      blog.likes.push(userId);
+      blog.dislikes = blog.dislikes.filter(id => id !== userId);
+    }
+
+    await blog.save();
+    res.json({ success: true, message: "Like toggled", likes: blog.likes.length, dislikes: blog.dislikes.length });
+
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const toggleDislike = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+    const userId = req.body.userId || req.ip;
+
+    const blog = await Blog.findById(blogId);
+    if (!blog) return res.json({ success: false, message: "Blog not found" });
+
+    const alreadyDisliked = blog.dislikes.includes(userId);
+    const alreadyLiked = blog.likes.includes(userId);
+
+    if (alreadyDisliked) {
+      blog.dislikes = blog.dislikes.filter(id => id !== userId);
+    } else {
+      blog.dislikes.push(userId);
+      blog.likes = blog.likes.filter(id => id !== userId);
+    }
+
+    await blog.save();
+    res.json({ success: true, message: "Dislike toggled", likes: blog.likes.length, dislikes: blog.dislikes.length });
+
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};

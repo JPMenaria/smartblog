@@ -16,6 +16,9 @@ const Blog = () => {
   
 
   const [data,setData] = useState(null)
+  const [likes, setLikes] = useState(0);
+const [dislikes, setDislikes] = useState(0);
+
   const [comments,setComments] = useState([])
     const [name,setName] = useState('')
      const [content,setContent] = useState('')
@@ -23,11 +26,43 @@ const Blog = () => {
   const fetchBlogData = async () => {
     try {
         const {data} = await axios.get(`/api/blog/${id}`)
-        data.success ? setData(data.blog) : toast.error(data.message)
+         if (data.success) {
+      setData(data.blog);
+      setLikes(data.blog.likes.length);
+      setDislikes(data.blog.dislikes.length);
+    } else {
+      toast.error(data.message);
+    }
     } catch (error) {
       toast.error(error.message)
     }
   }
+
+  const handleLike = async () => {
+  try {
+    const { data } = await axios.post(`/api/blog/like/${id}`, {
+      userId: "guest", // replace with real userId later
+    });
+    setLikes(data.likes);
+    setDislikes(data.dislikes);
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
+const handleDislike = async () => {
+  try {
+    const { data } = await axios.post(`/api/blog/dislike/${id}`, {
+      userId: "guest",
+    });
+    setLikes(data.likes);
+    setDislikes(data.dislikes);
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
+
+  
     const fetchComments = async () => {
       try {
         const {data} = await axios.post('/api/blog/comments', {blogId: id})
@@ -83,6 +118,29 @@ const Blog = () => {
         <img src={data.image} alt="" className='rounded-3xl mb-5' />
         <div className='rich-text animate-fadeInUp max-w-3xl mx-auto my-12'  dangerouslySetInnerHTML={{__html: data.description}}>
         </div>
+
+        <div className="flex items-center justify-center gap-6 my-10">
+  <button
+    onClick={handleLike}
+    className="flex items-center gap-2 text-gray-600 hover:text-black border border-gray-200 px-5 py-2 rounded-full shadow-sm hover:shadow-md transition duration-200 bg-white"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 9V5a3 3 0 00-6 0v4H5a1 1 0 00-.993.883L4 10v10a1 1 0 00.883.993L5 21h10.28a2 2 0 001.789-1.106l3.163-6.327a1 1 0 00-.895-1.45H16V9h-2z" />
+    </svg>
+    <span className="text-sm font-medium">Like ({likes})</span>
+  </button>
+
+  <button
+    onClick={handleDislike}
+    className="flex items-center gap-2 text-gray-600 hover:text-black border border-gray-200 px-5 py-2 rounded-full shadow-sm hover:shadow-md transition duration-200 bg-white"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 9V5a3 3 0 00-6 0v4H5a1 1 0 00-.993.883L4 10v10a1 1 0 00.883.993L5 21h10.28a2 2 0 001.789-1.106l3.163-6.327a1 1 0 00-.895-1.45H16V9h-2z" />
+    </svg>
+    <span className="text-sm font-medium">Dislike ({dislikes})</span>
+  </button>
+</div>
+
 
         <div className='mt-14 mb-10 max-w-3xl mx-auto'> 
             <p className='font-semibold mb-4'>Comments ({comments.length})</p>
