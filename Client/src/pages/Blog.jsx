@@ -8,11 +8,20 @@ import Loader from '../components/Loader'
 import { useAppContext } from '../context/AppContext'
 import toast from "react-hot-toast";
 
+
+
 const Blog = () => {
   const {id} = useParams()
   const {axios} = useAppContext()
 
-  
+  useEffect(() => {
+  let uid = localStorage.getItem("uid");
+  if (!uid) {
+    uid = `guest-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    localStorage.setItem("uid", uid);
+  }
+}, []);
+
   
 
   const [data,setData] = useState(null)
@@ -40,9 +49,11 @@ const [dislikes, setDislikes] = useState(0);
 
   const handleLike = async () => {
   try {
-    const { data } = await axios.post(`/api/blog/like/${id}`, {
-      userId: "guest", // replace with real userId later
-    });
+    const userId = localStorage.getItem("uid");
+const { data } = await axios.post(`/api/blog/like/${id}`, {
+  userId,
+});
+
     setLikes(data.likes);
     setDislikes(data.dislikes);
   } catch (error) {
@@ -52,9 +63,10 @@ const [dislikes, setDislikes] = useState(0);
 
 const handleDislike = async () => {
   try {
-    const { data } = await axios.post(`/api/blog/dislike/${id}`, {
-      userId: "guest",
-    });
+    const userId = localStorage.getItem("uid");
+const { data } = await axios.post(`/api/blog/dislike/${id}`, {
+  userId,
+});
     setLikes(data.likes);
     setDislikes(data.dislikes);
   } catch (error) {
