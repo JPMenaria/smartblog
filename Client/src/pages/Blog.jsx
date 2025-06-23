@@ -28,6 +28,10 @@ const Blog = () => {
   const [likes, setLikes] = useState(0);
 const [dislikes, setDislikes] = useState(0);
 
+
+const [isLiked, setIsLiked] = useState(false); 
+
+
   const [comments,setComments] = useState([])
     const [name,setName] = useState('')
      const [content,setContent] = useState('')
@@ -39,6 +43,7 @@ const [dislikes, setDislikes] = useState(0);
       setData(data.blog);
       setLikes(data.blog.likes.length);
       setDislikes(data.blog.dislikes.length);
+      
     } else {
       toast.error(data.message);
     }
@@ -47,15 +52,28 @@ const [dislikes, setDislikes] = useState(0);
     }
   }
 
-  const handleLike = async () => {
+  // ... (aapka fetchBlogData function)
+
+const handleLike = async () => {
   try {
     const userId = localStorage.getItem("uid");
-const { data } = await axios.post(`/api/blog/like/${id}`, {
-  userId,
-});
+    const { data } = await axios.post(`/api/blog/like/${id}`, {
+      userId,
+    });
 
     setLikes(data.likes);
     setDislikes(data.dislikes);
+
+    // *** YE LINE ADD KAREN ***
+    // Like button ke click hone par isLiked ko toggle karein
+    setIsLiked(prevIsLiked => !prevIsLiked); 
+    
+    // Agar aap chahte hain ki Like karne par fill ho aur dobara click karne par hat jaye (toggle)
+    // to ye upar wala 'setIsLiked' use karein.
+    // Agar aap bas click par fill karna chahte hain aur hamesha filled rahe (jab tak dislike na ho),
+    // to fir aapko backend response se check karna padega (jaise maine pehle bataya tha).
+    // Is simplified case mein, hum bas UI ko toggle kar rahe hain.
+
   } catch (error) {
     toast.error("Something went wrong");
   }
@@ -64,15 +82,22 @@ const { data } = await axios.post(`/api/blog/like/${id}`, {
 const handleDislike = async () => {
   try {
     const userId = localStorage.getItem("uid");
-const { data } = await axios.post(`/api/blog/dislike/${id}`, {
-  userId,
-});
+    const { data } = await axios.post(`/api/blog/dislike/${id}`, {
+      userId,
+    });
     setLikes(data.likes);
     setDislikes(data.dislikes);
+
+    // *** YE LINE ADD KAREN (OPTIONAL, Agar dislike karne par like button se color hatana ho) ***
+    // Dislike karne par, agar like button filled tha, toh usko normal kar do
+    setIsLiked(false); 
+
   } catch (error) {
     toast.error("Something went wrong");
   }
 };
+
+// ... (rest of your functions)
 
   
     const fetchComments = async () => {
@@ -131,10 +156,15 @@ const { data } = await axios.post(`/api/blog/dislike/${id}`, {
         <div className='rich-text animate-fadeInUp max-w-3xl mx-auto my-12'  dangerouslySetInnerHTML={{__html: data.description}}>
         </div>
 
-        <div className="flex items-center justify-center gap-6 my-10">
+     
+
+<div className="flex items-center justify-center gap-6 my-10">
   <button
     onClick={handleLike}
-    className="flex items-center gap-2 text-gray-600 hover:text-black border border-gray-200 px-5 py-2 rounded-full shadow-sm hover:shadow-md transition duration-200 bg-white"
+    // *** YAHAN CLASS CHANGE KIYA HAI ***
+    className={`flex items-center gap-2 text-gray-600 hover:text-black border border-gray-200 px-5 py-2 rounded-full shadow-sm hover:shadow-md transition duration-200 bg-white ${
+      isLiked ? "liked-button" : "" // Agar isLiked true hai, toh 'liked-button' class add hogi
+    }`}
   >
     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 9V5a3 3 0 00-6 0v4H5a1 1 0 00-.993.883L4 10v10a1 1 0 00.883.993L5 21h10.28a2 2 0 001.789-1.106l3.163-6.327a1 1 0 00-.895-1.45H16V9h-2z" />
@@ -144,6 +174,7 @@ const { data } = await axios.post(`/api/blog/dislike/${id}`, {
 
   <button
     onClick={handleDislike}
+    // *** DISLIKE BUTTON KI CLASS WAHI RAHEGI ***
     className="flex items-center gap-2 text-gray-600 hover:text-black border border-gray-200 px-5 py-2 rounded-full shadow-sm hover:shadow-md transition duration-200 bg-white"
   >
     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -152,6 +183,7 @@ const { data } = await axios.post(`/api/blog/dislike/${id}`, {
     <span className="text-sm font-medium">Dislike ({dislikes})</span>
   </button>
 </div>
+
 
 
         <div className='mt-14 mb-10 max-w-3xl mx-auto'> 

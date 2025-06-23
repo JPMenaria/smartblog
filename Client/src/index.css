@@ -58,3 +58,18 @@
   }
 }
 
+/* Add this to your existing CSS file */
+
+/* Apni existing CSS file mein yeh add karein */
+
+.liked-button {
+  background-color: black !important; /* Button ko black fill karega */
+  color: white !important; /* Text aur icon ka color white karega */
+  border-color: black !important; /* Border bhi black karega */
+}
+
+/* SVG icon ko bhi white karne ke liye */
+.liked-button svg {
+  stroke: white !important; /* SVG ka stroke color white karega */
+  fill: white !important;   /* Agar SVG mein fill property ho toh usko bhi white karega */
+}
