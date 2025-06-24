@@ -14,6 +14,7 @@ import { useAppContext } from './context/AppContext'
 import BecomeBlogger from './pages/BecomeBlogger'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import About from './pages/About';
 
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
       <Toaster/>
       <Routes>
         <Route path='/become-blogger' element = {<BecomeBlogger/>} />
+        <Route path='/about' element = {<About/>} />
         <Route path='/' element = {<Home/>} />
         <Route path='/blog/:id' element = {<Blog/>} />
         <Route path='/admin' element={token ? <Layout/> : <Login/>}>

@@ -1,6 +1,5 @@
 import React from 'react'
 import { assets } from '../assets/assets'
-import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 
 const Navbar = () => {
@@ -12,7 +11,7 @@ const Navbar = () => {
       data-aos='fade-down'
       data-aos-duration='800'
     >
-      {/* Logo on the left */}
+      {/* Logo */}
       <img
         src={assets.logo}
         alt="Logo"
@@ -23,8 +22,17 @@ const Navbar = () => {
         }}
       />
 
-      {/* Buttons aligned to right */}
-      <div className='ml-auto flex items-center gap-4'>
+      {/* Navigation Links */}
+      <div className="ml-auto flex items-center gap-4">
+        {/* About Us Button */}
+        <button
+          onClick={() => navigate('/about')}
+          className='text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-300 cursor-pointer'
+        >
+          About Us
+        </button>
+
+        {/* Admin / Dashboard Button */}
         <button
           onClick={() => navigate('/admin')}
           className='group flex items-center gap-2 rounded-full text-sm font-medium bg-primary text-white px-5 py-2.5 transition-all duration-300 hover:bg-primary/90 hover:scale-105 shadow-md'
