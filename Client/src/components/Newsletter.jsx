@@ -39,7 +39,7 @@ const Newsletter = () => {
       {/* Become a Blogger CTA */}
       <button
         onClick={() => window.location.href = "/become-blogger"}
-        className='mt-6 px-6 py-3 bg-primary text-white text-sm font-semibold rounded-lg shadow hover:bg-primary/90 transition-all'
+        className='mt-6 px-6 py-3 bg-primary text-white text-sm font-semibold rounded-lg shadow hover:bg-primary/90 transition-all cursor-pointer'
         data-aos="fade-up"
         data-aos-delay="200"
       >

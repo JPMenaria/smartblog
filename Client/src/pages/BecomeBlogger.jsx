@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import emailjs from '@emailjs/browser'
+import Loader from '../components/Loader'
 
 const BecomeBlogger = () => {
   const [name, setName] = useState('')
@@ -25,15 +26,13 @@ const BecomeBlogger = () => {
     }
 
     emailjs.send(serviceId, templateId, templateParams, publicKey)
-      .then((response) => {
-        console.log('✅ Email sent!', response)
+      .then(() => {
         setSuccess(true)
         setName('')
         setEmail('')
         setCategory('')
         setMessage('')
-
-        setTimeout(() => setSuccess(false), 4000) // hide message after 4 sec
+        setTimeout(() => setSuccess(false), 4000)
       })
       .catch((error) => {
         console.error('❌ Failed to send email:', error)
@@ -45,66 +44,66 @@ const BecomeBlogger = () => {
     <>
       <Navbar />
 
-      <div className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 animate-fade-in">
-        <h1 className="text-4xl font-bold mb-4">Become a Blogger</h1>
-        <p className="text-gray-600 max-w-xl mb-6">
-          Fill out the form below to send us your request. We’ll get back to you soon!
-        </p>
-
-        <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-md space-y-4 text-left animate-slide-up"
-        >
-          <input
-            type="text"
-            name="user_name"
-            placeholder="Your Name"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md outline-none"
-          />
-          <input
-            type="email"
-            name="user_email"
-            placeholder="Your Email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md outline-none"
-          />
-          <input
-            type="text"
-            name="category"
-            placeholder="Preferred Category (tech, lifestyle, etc.)"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md outline-none"
-          />
-          <textarea
-            name="message"
-            rows="4"
-            placeholder="Your Message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md outline-none"
-          ></textarea>
-
-          <button
-            type="submit"
-            className="w-full px-6 py-3 bg-primary text-white font-semibold rounded-md
-             transition-all duration-150 ease-in-out 
-             active:scale-95 hover:scale-105 cursor-pointer"
-          >
-            Send Request
-          </button>
-
-          {success && (
-            <p className="text-green-600 text-center pt-2 animate-pulse">
-              ✅ Message sent successfully!
+      <div className="min-h-[calc(100vh-80px)] bg-[#fefefe] py-16 px-4 flex justify-center items-start md:items-center">
+        <div className="w-full max-w-xl bg-white border border-gray-200 shadow-lg rounded-3xl p-8 md:p-10 transition hover:shadow-xl duration-300">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-extrabold text-violet-700 flex items-center justify-center gap-2">
+              <svg className="w-7 h-7 text-violet-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.83 4.22l-1.95-1.95a1.5 1.5 0 00-2.12 0l-1.83 1.83 4.07 4.07 1.83-1.83a1.5 1.5 0 000-2.12zM3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25z"></path>
+              </svg>
+              Become a Blogger
+            </h2>
+            <p className="text-gray-600 mt-2 text-sm md:text-base">
+              Want to share your voice? Fill the form and join our growing community!
             </p>
-          )}
-        </form>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <input
+              type="text"
+              placeholder="Your Name"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-400"
+            />
+            <input
+              type="email"
+              placeholder="Your Email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-400"
+            />
+            <input
+              type="text"
+              placeholder="Preferred Category (e.g., Tech, Fashion...)"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-400"
+            />
+            <textarea
+              rows="4"
+              placeholder="Your Message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-400"
+            />
+
+            <button
+              type="submit"
+              className="w-full py-3 bg-gradient-to-r from-violet-600 to-purple-700 text-white rounded-xl font-semibold hover:scale-105 transition-transform duration-300 shadow-md cursor-pointer"
+            >
+              ✉️ Send Request
+            </button>
+
+            {success && (
+              <p className="text-green-600 text-center font-medium pt-2 animate-pulse">
+                ✅ Message sent successfully!
+              </p>
+            )}
+          </form>
+        </div>
       </div>
     </>
   )
