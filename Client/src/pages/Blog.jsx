@@ -64,7 +64,7 @@ const handleLike = async () => {
     setLikes(data.likes);
     setDislikes(data.dislikes);
 
-    // *** YE LINE ADD KAREN ***
+    
     // Like button ke click hone par isLiked ko toggle karein
     setIsLiked(prevIsLiked => !prevIsLiked); 
     

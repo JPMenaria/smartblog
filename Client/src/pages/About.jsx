@@ -114,9 +114,10 @@ const About = () => {
   }, []);
 
   const team = [
-    { name: 'JP Menaria', role: 'Lead Developer & AI Specialist', imageUrl: 'http://googleusercontent.com/image_collection/image_retrieval/970065669507229619', social: { linkedin: '#', github: '#' } },
+    { name: 'JP Menaria', role: 'Backend Developer', imageUrl: 'http://googleusercontent.com/image_collection/image_retrieval/970065669507229619', social: { linkedin: '#', github: '#' } },
     { name: 'Arjun Teli', role: 'Frontend Architect & UI/UX Designer', imageUrl: 'http://googleusercontent.com/image_collection/image_retrieval/4796363876289995601', social: { linkedin: '#', github: '#' } },
-    { name: 'Kartik Joshi', role: 'Backend Engineer', imageUrl: 'http://googleusercontent.com/image_collection/image_retrieval/4509833031439297202', social: { linkedin: '#', github: '#' } }
+    { name: 'Kartik Joshi', role: 'Frontend Developer', imageUrl: 'http://googleusercontent.com/image_collection/image_retrieval/4509833031439297202', social: { linkedin: '#', github: '#' } },
+    { name: 'Gaurav Menaria', role: 'Frontend Developer', imageUrl: 'http://googleusercontent.com/image_collection/image_retrieval/9999999999999999999', social: { linkedin: '#', github: '#' } }
   ];
 
   const features = [
